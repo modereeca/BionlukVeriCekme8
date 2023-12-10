@@ -3,15 +3,20 @@ from openpyxl import Workbook
 import requests
 from bs4 import BeautifulSoup
 
+# Excel dosyasını oluşturuyor. output_file'a her döngüde kayıt ediliyor.
+output_file = "firma_bilgileri2.xlsx"
 wb = Workbook()
 ws = wb.active
-url = "https://www.rehberfx.com/arama?query=izmir&page="
-basliklar = ("FİRMA ADI", "CEP NUMARASI", "TEL", "MAİL ADRESİ", "URL")
-a = 1
 
+# Url sonundaki page= kısmı önemli, aşağıda offset ona göre belirleniyor.
+url = "https://www.rehberfx.com/arama?query=izmir&page="
+
+# Ekstra veri çekmek istendiğinde, buradan başlıklar ona göre ekleniyor.
+basliklar = ("FİRMA ADI", "CEP NUMARASI", "TEL", "MAİL ADRESİ", "URL")
+col = 1
 for baslik in basliklar:
-    ws.cell(column=a, row=1).value = baslik
-    a += 1
+    ws.cell(column=col, row=1).value = baslik
+    col += 1
 
 query = "#gsc.tab=0&gsc.q=izmir&gsc.page=1"
 r = 2
@@ -53,4 +58,4 @@ while Offset < 6328:
 
     Offset += 1
     print(Offset)
-    wb.save("firma_bilgileri2.xlsx")
+    wb.save(output_file)
